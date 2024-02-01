@@ -9,23 +9,20 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: greylake/web-app:latest
-  USERNAME: ${{ secrets.SSH_USER }}
-  PASSWORD: ${{ secrets.SSH_PASSWORD }}
-  HOST: ${{ secrets.SSH_HOST }}
-  PORT: 22
-  KEY: ${{ secrets.SSH_PRIVATE_KEY }}
   
 jobs:
   deploy:
-
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      packages: write
+      
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
     - name: Debug
       run: |
-        echo "SSH_HOST: ${{ env.HOST }}"
+        echo "SSH_HOST: ${{ secrets.SSH_HOST }}
         echo "SSH_PORT: ${{ env.PORT }}"
         echo "SSH_USER: ${{ env.USERNAME }}"
         echo "SSH_PASSWORD: ${{ env.PASSWORD }}"
@@ -33,11 +30,11 @@ jobs:
     - name: Set up SSH Key
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ env.HOST }}
-        port: ${{ env.PORT }}
-        username: ${{ env.USERNAME }}
-        key: ${{ env.KEY }}
-        password: ${{ env.PASSWORD }}
+        host: ${{ secrets.SSH_HOST }}
+        port: 22
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        password: ${{ secrets.SSH_PASSWORD }}
         script: |
           cd ${{ secrets.WORK_PATH }}
           docker-compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
