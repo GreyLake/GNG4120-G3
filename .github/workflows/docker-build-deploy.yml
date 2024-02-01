@@ -39,5 +39,5 @@ jobs:
         port: 22
         script: |
           cd ${{ secrets.WORK_PATH }}
-          docker-compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          docker-compose up -d
+          docker compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          docker compose up -d
