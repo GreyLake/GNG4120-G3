@@ -1,4 +1,4 @@
-name: Docker Build
+name: Docker Build & Deploy
 
 on:
   push:
@@ -29,3 +29,15 @@ jobs:
       run: |
          docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          cd ${{ secrets.WORK_PATH }}
+          docker-compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          docker-compose up -d
