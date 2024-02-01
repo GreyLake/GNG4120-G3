@@ -24,7 +24,7 @@ jobs:
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
         chmod 600 private_key.pem
-        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -i private_key.pem ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}
+        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -i private_key.pem ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} \
         "cd ${{ secrets.WORK_PATH }} && docker-compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} && docker-compose up -d && exit"
 
    
