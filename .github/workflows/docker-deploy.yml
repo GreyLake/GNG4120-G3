@@ -21,18 +21,11 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
     - name: Set up SSH Key
-      uses: appleboy/ssh-action@master
-      with:
-        secrets: inherit
-        host: ${{ secrets.SSH_HOST }}
-        port: 22
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        password: ${{ secrets.SSH_PASSWORD }}
-        script: |
-          cd ${{ secrets.WORK_PATH }}
-          docker-compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          docker-compose up -d
+      run: |
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 
+          "cd ${{ secrets.WORK_PATH }} &&
+          docker-compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} &&
+          docker-compose up -d"
 
    
 
