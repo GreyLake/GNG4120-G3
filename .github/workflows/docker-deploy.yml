@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up SSH Key
-      uses: appleboy/ssh-action@v1.0.3
+      uses: actions/ssh-action@v2
       with:
         username: ${{ secrets.SSH_USER }}
         password: ${{ secrets.SSH_PASSWORD }}
