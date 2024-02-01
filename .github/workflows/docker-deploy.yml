@@ -20,14 +20,23 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
-    - name: Connect and Deploy
+    - name: pass multiple environment
       uses: appleboy/ssh-action@v1.0.3
+      env:
+        FOO: "BAR"
+        BAR: "FOO"
+        SHA: ${{ github.sha }}
+        PORT: ${{ secrets.PORT }}
       with:
-        host: 45.61.162.68
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        password: ${{ secrets.SSH_PASSWORD }}
-        port: 22
-        script: whoami
-   
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        envs: FOO,BAR,SHA,PORT
+        script: |
+          echo "I am $FOO, thanks"
+          echo "I am $BAR, thanks"
+          echo "sha: $SHA"
+          echo "port: $PORT"
+          sh test.sh
 
