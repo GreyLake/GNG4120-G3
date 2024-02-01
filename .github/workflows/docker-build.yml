@@ -23,7 +23,7 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Set Proper Image Name
-      uses: Entepotenz/change-string-case-action@v1
+      uses: Entepotenz/change-string-case-action-min-dependencies@v1.1.0
       with:
         string: ${{ env.IMAGE_NAME }}
         run: echo "IMAGE_NAME=${{ steps.convert_actor.outputs.lowercase }}/web-app:latest" >> $GITHUB_ENV
