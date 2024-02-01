@@ -5,6 +5,7 @@ services:
     image: mongo:5.0.2
     restart: unless-stopped
     env_file: ./.env
+    container_name: "web-database"
     environment:
       - MONGO_INITDB_ROOT_USERNAME=$MONGODB_USER
       - MONGO_INITDB_ROOT_PASSWORD=$MONGODB_PASSWORD
@@ -12,12 +13,14 @@ services:
       - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
     volumes:
       - db:/data/db
-  app:
+  web_app:
     depends_on:
       - mongo_db
-    build: ./web-app
+    build: .
+    image: ghcr.io/greylake/web-app:latest
     restart: on-failure
     env_file: ./.env
+    container_name: "web-app"
     ports:
       - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
     environment:
