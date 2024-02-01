@@ -20,11 +20,13 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v3
-    - name: Connect to SSH
-      run: |
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
-        chmod 600 private_key.pem
-        sshpass -p "${{ secrets.SSH_PASSWORD }}" ssh -i private_key.pem ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:22 "cd ${{ secrets.WORK_PATH }} && docker-compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} && docker-compose up -d && exit"
-
+    - name: Connect and Deploy
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: whoami
    
 
