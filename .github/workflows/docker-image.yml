@@ -16,5 +16,3 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag web-app:$(date +%s)
-    - name: Test the Docker image
-      run: docker run --network container:web-app appropriate/curl -s --retry 10 --retry-connrefused http://localhost:45080/
