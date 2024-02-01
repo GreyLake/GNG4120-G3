@@ -9,6 +9,11 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: greylake/web-app:latest
+  USERNAME: ${{ secrets.SSH_USER }}
+  PASSWORD: ${{ secrets.SSH_PASSWORD }}
+  HOST: ${{ secrets.SSH_HOST }}
+  PORT: 22
+  KEY: ${{ secrets.SSH_PRIVATE_KEY }}
   
 jobs:
   deploy:
@@ -22,11 +27,11 @@ jobs:
     - name: Set up SSH Key
       uses: appleboy/ssh-action@v0.1.9
       with:
-        username: ${{ secrets.SSH_USER }}
-        password: ${{ secrets.SSH_PASSWORD }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        host: 45.61.162.68
-        port: 22
+        username: ${{ env.USERNAME }}
+        key: ${{ env.KEY }}
+        password: ${{ env.PASSWORD }}
+        host: ${{ env.HOST }}
+        port: ${{ env.PORT }}
         script: |
           cd ${{ secrets.WORK_PATH }}
           docker-compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
