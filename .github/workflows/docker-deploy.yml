@@ -16,12 +16,13 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up SSH Key
-      uses: appleboy/ssh-action@v0.1.4
+      uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
-        username: root
+        username: ${{ secrets.SSH_USER }}
+        passphrase: ""
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        port: 22
+        script_stop: true
         script: |
           cd ${{ secrets.WORK_PATH }}
           docker-compose pull web_app
