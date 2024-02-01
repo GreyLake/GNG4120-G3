@@ -22,10 +22,13 @@ jobs:
       uses: actions/checkout@v3
     - name: Set up SSH Key
       run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+    - name: Connect to SSH
+      run: | 
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 
-          "cd ${{ secrets.WORK_PATH }} &&
-          docker-compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} &&
-          docker-compose up -d"
+          "cd ${{ secrets.WORK_PATH }} && docker-compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} && docker-compose up -d && exit"
 
    
 
