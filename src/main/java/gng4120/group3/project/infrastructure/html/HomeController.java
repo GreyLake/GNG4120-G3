@@ -1,4 +1,4 @@
-package gng4120.moomoney.MooMoney.html;
+package gng4120.group3.project.infrastructure.html;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
