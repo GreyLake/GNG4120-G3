@@ -38,6 +38,6 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          cd ${{ secrets.WORK_PATH }}
+          cd /var/app/web/gng4120/
           docker compose pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           docker compose up -d
