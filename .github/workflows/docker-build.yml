@@ -22,6 +22,11 @@ jobs:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+    - name: Set Proper Image Name
+      uses: Entepotenz/change-string-case-action@v1
+      with:
+        string: ${{ env.IMAGE_NAME }}
+        run: echo "IMAGE_NAME=${{ steps.convert_actor.outputs.lowercase }}/web-app:latest" >> $GITHUB_ENV
     - name: Build and Publish
       run: |
          docker build . --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
