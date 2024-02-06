@@ -1,4 +1,4 @@
-package gng4120.group3.project.controllers;
+package gng4120.group3.project.controllers.api;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;

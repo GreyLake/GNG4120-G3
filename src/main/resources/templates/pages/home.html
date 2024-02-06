@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MooMoney</title>
+</head>
+    <body>
+        Hello World 6 - Restructured Project
+
+        <div sec:authorize="isAuthenticated()">
+            <!-- Content for authenticated users -->
+            <h1>Welcome, <span sec:authorize="name"></span></h1>
+        </div>
+
+        <div sec:authorize="isAnonymous()">
+            <!-- Content for anonymous users -->
+            <h1>Welcome to , Please Sign In - Test123</h1>
+        </div>
+
+    </body>
+</html>

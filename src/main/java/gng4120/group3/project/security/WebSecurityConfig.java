@@ -18,6 +18,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 @Configuration
 @EnableMethodSecurity
@@ -59,15 +60,35 @@ public class WebSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/**").authenticated()
-                                .requestMatchers("/api/test/**").permitAll()
-                                .anyRequest().permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        // API requests must be authenticated (except for test)
+                        .requestMatchers("/api/auth/**").authenticated()
+                        .requestMatchers("/api/test/**").permitAll()
+                        // Account signin and signup must be accessed by nonuser
+                        .requestMatchers("/account/signin").anonymous()
+                        .requestMatchers("/account/signup").anonymous()
+                        // Account access must be authenticated
+                        .requestMatchers("/account/0/**").authenticated()
+                        // Main pages, and viewing can be done by anyone
+                        .anyRequest().permitAll()
                 );
 
         http.authenticationProvider(authenticationProvider());
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        http.formLogin(form -> form
+                        .loginPage("/account/signin")
+                        .usernameParameter("email")
+                        .failureUrl("/account/signin?loginError=true"));
+
+        http.logout(logout -> logout
+                        .logoutSuccessUrl("/?logoutSuccess=true")
+                        .deleteCookies("JSESSIONID"));
+
+        http.exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(
+                                new LoginUrlAuthenticationEntryPoint("/account/signin?loginRequired=true")));
 
         return http.build();
     }
