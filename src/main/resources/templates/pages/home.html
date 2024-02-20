@@ -3,21 +3,102 @@
       xmlns:sec="http://www.thymeleaf.org"
       lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>MooMoney</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/common.css}" media="all">
+
+    <title>Moo Money</title>
 </head>
-    <body>
-        Hello World 6 - Restructured Project
+<body>
 
-        <div sec:authorize="isAuthenticated()">
-            <!-- Content for authenticated users -->
-            <h1>Welcome, <span sec:authorize="name"></span></h1>
+<div th:replace="~{fragments/page/navbar :: nav}"></div>
+
+<div class="container-fluid py-5 px-md-5 feature">
+    <div class="p-5 mb-4 bg-light rounded-3 row justify-content-center">
+        <h1 class="py-1" style="color: rgb(38,38,38)">Take Your <span style="color: #5c93d2">Finance Management</span>
+            <br>To The Next Level</h1>
+        <p class="text-center fs-5 col-md-8" style="color: rgb(44,44,44)">MooMoney Is A Financial Management
+            Educational Service. We Provide Interactive Online Learning Methods To Help Guide You On Your
+            Journey To Financial Happiness.</p>
+        <p class="fs-4" style="color: rgb(44,44,44)">MooMoney, Less Problems</p>
+        <p><a class="btn btn-primary" href="#">Start Now</a></p>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row page-intro">
+        <div class="col-lg-12">
+            <h1>
+                <small>How We Operate</small>
+            </h1>
+            <p>At MooMoney, we help you gain financial wisdom through our user-friendly app.
+                Tailored for young minds, we offer interactive learning modules, simulations,
+                personalized paths, community engagement, expert advice, games, and resources.
+                Whether you're a student, recent grad, or just aiming to boost your financial skills,
+                MooMoney has you covered.</p>
         </div>
+    </div>
 
-        <div sec:authorize="isAnonymous()">
-            <!-- Content for anonymous users -->
-            <h1>Welcome to , Please Sign In - Test123</h1>
-        </div>
+    <div class="row page-info py-5">
+        <h1 class="py-2">
+            <small>Ways To Learn</small>
+        </h1>
+        <article class="col-md-4 article-intro">
+            <a href="#">
+                <img class="img-fluid rounded" th:src="@{/svg/700x300.svg}" alt src="">
+            </a>
+            <h3 class="py-1">
+                <a class="link-body-emphasis text-decoration-none" href="#">Interactive Games</a>
+            </h3>
+            <p>Engage and learn through fun challenges and gamified activities
+                that make financial education enjoyable and effective.</p>
+        </article>
+        <article class="col-md-4 article-intro">
+            <a href="#">
+                <img class="img-fluid rounded" th:src="@{/svg/700x300.svg}" alt src="">
+            </a>
+            <h3 class="py-1">
+                <a class="link-body-emphasis text-decoration-none" href="#">Online Lessons</a>
+            </h3>
+            <p>Access comprehensive educational content through interactive
+                modules and curated learning paths, tailored to your financial goals and needs.</p>
+        </article>
+        <article class="col-md-4 article-intro">
+            <a href="#">
+                <img class="img-fluid rounded" th:src="@{/svg/700x300.svg}" alt src="">
+            </a>
+            <h3 class="py-1">
+                <a class="link-body-emphasis text-decoration-none" href="#">Professional Advice</a>
+            </h3>
+            <p>Gain valuable insights and guidance from financial experts to make
+                informed decisions and maximize your financial well-being.</p>
+        </article>
+    </div>
 
-    </body>
+    <!-- Auth Example
+    <div sec:authorize="isAuthenticated()">
+        //Content for authenticated users
+        <h1>Welcome, <span sec:authorize="name"></span></h1>
+    </div>
+
+    <div sec:authorize="isAnonymous()">
+        //Content for anonymous users
+        <h1>Welcome to , Please Sign In - Test123</h1>
+    </div>
+    -->
+
+
+</div>
+
+<div th:replace="~{fragments/page/footer :: footer}"></div>
+
+<script th:src="@{/js/holder.min.js}"></script>
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
+<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+</body>
 </html>

@@ -1,0 +1,46 @@
+body {
+    /* Height of navbar-expand-lg */
+    padding-top: 57px;
+    color: #959595;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: black;
+}
+
+.feature {
+}
+
+.article-intro {
+    margin-bottom: 25px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.footer-blurb {
+    padding: 30px 0;
+}
+
+.footer-blurb-item {
+    padding: 30px;
+}
+
+.small-print {
+    background-color: #fff;
+    padding: 30px 0;
+}
+
+.vertical-line {
+    border-left: 1px solid #ccc; /* Vertical line */
+    height: 75%; /* Set height to 75% of the parent element's height */
+    margin: 0 10px; /* Adjust the margin as needed */
+}
+
+.feature,
+.page-intro,
+.page-info,
+.article-intro,
+.footer-blurb,
+.small-print {
+    text-align: center;
+}

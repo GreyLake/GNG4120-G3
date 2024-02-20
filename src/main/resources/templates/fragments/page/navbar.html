@@ -1,0 +1,64 @@
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container-fluid px-4">
+        <!-- Logo -->
+        <a class="navbar-brand justify-content-start" href="/">
+            <img th:src="@{/svg/100x100.svg}" src="" alt="Logo" width="30" height="30" class="d-inline-block align-text-top rounded-circle">
+            Moo Money
+        </a>
+
+        <!-- Toggle button for mobile -->
+        <button class="navbar-toggler"
+                type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarNav" aria-controls="navbarNav"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse container-fluid" id="navbarNav">
+            <!-- Options -->
+            <div class="mx-auto">
+                <ul class="navbar-nav">
+                    <li class="nav-item px-1">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block">
+                        <span class="vertical-line"></span> <!-- Vertical line component -->
+                    </li>
+                    <li class="nav-item px-1">
+                        <a class="nav-link" href="howto">How It Works</a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block">
+                        <span class="vertical-line"></span> <!-- Vertical line component -->
+                    </li>
+                    <li class="nav-item px-1">
+                        <a class="nav-link" href="learn">Learn More</a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block">
+                        <span class="vertical-line"></span> <!-- Vertical line component -->
+                    </li>
+                    <li class="nav-item px-1">
+                        <a class="nav-link" href="about">About Us</a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block">
+                        <span class="vertical-line"></span> <!-- Vertical line component -->
+                    </li>
+                    <li class="nav-item px-1">
+                        <a class="nav-link" href="support">Support</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Signup/Signin Buttons -->
+            <div class="" style="padding-left: 5px">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <button class="btn btn-outline-primary me-2" type="button">Sign Up</button>
+                        <button class="btn btn-outline-secondary" type="button">Sign In</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
