@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/account")
 public class SignUpController {
 
-    @RequestMapping({"/signup", "/register"})
+    @RequestMapping("/signup")
     public String signUp(){
-        return "pages/signup";
+        return "pages/account/auth";
     }
 
 }
