@@ -26,11 +26,11 @@
 
                 <div th:if="${errorMessage}" class="alert alert-danger align-items-center" role="alert">
                   <!-- Error message container -->
-                  <p class="align-middle" th:text="${errorMessage}"></p>
+                  <p class="align-middle text-center m-0" th:text="${errorMessage}"></p>
                 </div>
                 <div th:if="${successMessage}" class="alert alert-success align-items-center" role="alert">
                   <!-- Success message container -->
-                  <p class="align-middle" th:text="${successMessage}"></p>
+                  <p class="align-middle text-center m-0" th:text="${successMessage}"></p>
                 </div>
                 <div th:if="${isNew}">
                   <!-- Render content for signup page -->
@@ -50,7 +50,5 @@
       <section th:replace="~{fragments/page/footer :: section}"></section>
 
     </section>
-
-    <script th:src="@{/js/auth.js}"></script>
   </body>
 </html>

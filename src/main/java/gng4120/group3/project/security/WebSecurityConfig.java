@@ -1,5 +1,7 @@
 package gng4120.group3.project.security;
 
+import gng4120.group3.project.security.handler.LoginAuthenticationEntryPoint;
+import gng4120.group3.project.security.handler.LoginAuthenticationFailureHandler;
 import gng4120.group3.project.security.jwt.AuthEntryPointJwt;
 import gng4120.group3.project.security.jwt.AuthTokenFilter;
 import gng4120.group3.project.security.services.UserDetailsServiceImpl;
@@ -65,7 +67,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/test/**").permitAll()
                         // Account signin and isNew must be accessed by nonuser
-                        .requestMatchers("/auth/**").anonymous()
+                        .requestMatchers("/account/auth/**").anonymous()
                         // Account access must be authenticated
                         .requestMatchers("/account/0/**").authenticated()
                         // Main pages, and viewing can be done by anyone
@@ -78,9 +80,10 @@ public class WebSecurityConfig {
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin(form -> form
-                        .loginPage("/auth")
+                        .loginPage("/account/auth")
                         .usernameParameter("email")
-                        .failureUrl("/auth/?loginError=true"));
+                        .failureUrl("/account/auth?error")
+                        .failureHandler(new LoginAuthenticationFailureHandler()));
 
         http.logout(logout -> logout
                         .logoutSuccessUrl("/?logoutSuccess=true")
@@ -88,21 +91,9 @@ public class WebSecurityConfig {
 
         http.exceptionHandling(exception -> exception
                         .authenticationEntryPoint(
-                                new LoginUrlAuthenticationEntryPoint("/auth/?loginRequired=true")));
+                                new LoginAuthenticationEntryPoint("/account/auth?error")));
 
         return http.build();
     }
-
-    /*    OLD - Ignore Security Login - Josiah Bigras
-    //    @Bean
-    //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    //        return http
-    //                .authorizeHttpRequests(auth -> auth
-    //                        .anyRequest().permitAll()
-    //                )
-    //                .httpBasic(Customizer.withDefaults())
-    //                .build();
-    //    }
-    */
 
 }

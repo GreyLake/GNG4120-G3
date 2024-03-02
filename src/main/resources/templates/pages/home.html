@@ -12,9 +12,14 @@
 
     <title>Moo Money</title>
 </head>
-    <body>
+<body>
     <section id="bodySection">
         <section th:replace="~{fragments/page/navbar :: section}"></section>
+
+        <div th:if="${signoutMessage}" class="alert alert-success align-items-center" role="alert">
+            <!-- Success message container -->
+            <p class="align-middle text-center m-0" th:text="${signoutMessage}"></p>
+        </div>
 
         <section id="authorized" sec:authorize="isAuthenticated()">
             <section th:replace="~{fragments/page/authorized/home :: section}"></section>
@@ -26,7 +31,6 @@
 
         <section th:replace="~{fragments/page/footer :: section}"></section>
     </section>
-
 
     <script th:src="@{/js/holder.min.js}"></script>
     <script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
