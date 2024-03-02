@@ -1,6 +1,9 @@
 package gng4120.group3.project.models;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "roles")
@@ -9,11 +12,8 @@ public class Role {
     @Id
     private String id;
 
+    @NotBlank
     private ERole name;
-
-    public Role() {
-
-    }
 
     public Role(ERole name) {
         this.name = name;

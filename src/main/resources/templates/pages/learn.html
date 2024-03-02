@@ -14,23 +14,23 @@
   <title>Moo Money</title>
 </head>
 <body>
+  <section id="bodySection">
+    <div th:replace="~{fragments/page/navbar :: nav}"></div>
 
-<div th:replace="~{fragments/page/navbar :: nav}"></div>
-
-<div class="container-fluid py-5 px-md-5 feature">
-  <div class="mh-100 min-vh-100 h-100">
-    <div class="p-5 mb-4 bg-light rounded-3 row justify-content-center">
-      <h1>Website Under Construction 🐮</h1>
-      <p>We're working hard to bring you an amazing website. Please check back later!</p>
+    <div class="container-fluid py-5 px-md-5 feature">
+      <div class="mh-100 min-vh-100 h-100">
+        <div class="p-5 mb-4 bg-light rounded-3 row justify-content-center">
+          <h1>Website Under Construction 🐮</h1>
+          <p>We're working hard to bring you an amazing website. Please check back later!</p>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<div th:replace="~{fragments/page/footer :: footer}"></div>
-
-<script th:src="@{/js/holder.min.js}"></script>
-<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
-<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
+    <div th:replace="~{fragments/page/footer :: footer}"></div>
+  </section>
+  <script th:src="@{/js/holder.min.js}"></script>
+  <script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
+  <script th:src="@{/js/jquery-1.11.3.min.js}"></script>
 </body>
 </html>
