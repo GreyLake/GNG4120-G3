@@ -26,13 +26,13 @@
                 <!-- Render content for isNew page -->
                 <div th:if="${isNew}">
                   <!-- Include the isNew fragment from a different directory -->
-                  <div th:replace="~{fragments/account/signup :: section(signupForm=${signupForm})}"></div>
+                  <div th:replace="~{fragments/account/signup :: section(signupForm=${signupRequest})}"></div>
                 </div>
 
                 <!-- Render content for signin page -->
                 <div th:unless="${isNew}">
                   <!-- Include the signin fragment from a different directory -->
-                  <div th:replace="~{fragments/account/signin :: section(signinForm=${signinForm})}"></div>
+                  <div th:replace="~{fragments/account/signin :: section(signinForm=${signinRequest})}"></div>
                 </div>
               </div>
             </div>
@@ -43,5 +43,7 @@
       <section th:replace="~{fragments/page/footer :: section}"></section>
 
     </section>
+
+    <script th:src="@{/js/auth.js}"></script>
   </body>
 </html>

@@ -62,11 +62,10 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // API requests must be authenticated (except for test)
-                        .requestMatchers("/api/auth/**").authenticated()
+                        .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/test/**").permitAll()
                         // Account signin and isNew must be accessed by nonuser
-                        .requestMatchers("/account/signin").anonymous()
-                        .requestMatchers("/account/isNew").anonymous()
+                        .requestMatchers("/auth/**").anonymous()
                         // Account access must be authenticated
                         .requestMatchers("/account/0/**").authenticated()
                         // Main pages, and viewing can be done by anyone
@@ -78,9 +77,9 @@ public class WebSecurityConfig {
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.formLogin(form -> form
-                        .loginPage("/account/signin")
+                        .loginPage("/auth")
                         .usernameParameter("email")
-                        .failureUrl("/account/signin?loginError=true"));
+                        .failureUrl("/auth/?loginError=true"));
 
         http.logout(logout -> logout
                         .logoutSuccessUrl("/?logoutSuccess=true")
@@ -88,7 +87,7 @@ public class WebSecurityConfig {
 
         http.exceptionHandling(exception -> exception
                         .authenticationEntryPoint(
-                                new LoginUrlAuthenticationEntryPoint("/account/signin?loginRequired=true")));
+                                new LoginUrlAuthenticationEntryPoint("/auth/?loginRequired=true")));
 
         return http.build();
     }

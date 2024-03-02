@@ -15,9 +15,9 @@ public class AuthController {
     public String authPage(@RequestParam(required = false, name = "isNew") Boolean isNew, Model model) {
         model.addAttribute("isNew", isNew != null && isNew);
 
-        model.addAttribute("signupForm", new SignupRequest());
+        model.addAttribute("signupRequest", new SignupRequest());
 
-        model.addAttribute("signinForm", new SigninRequest());
+        model.addAttribute("signinRequest", new SigninRequest());
 
         return "pages/account/auth"; // Assuming authPage.html is your authentication page
     }

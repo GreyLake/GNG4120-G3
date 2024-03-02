@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -30,7 +31,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RestController
+@Controller
 @RequestMapping("/api/auth")
 public class AuthAPIController {
     @Autowired
@@ -71,35 +72,30 @@ public class AuthAPIController {
                         roles));
     }
 
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public ResponseEntity<?> registerUser(@ModelAttribute("signupRequest") SignupRequest signupRequest) {
 
+        System.out.println("Test!");
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-
-        if (!signUpRequest.getPassword().equals(signUpRequest.getPasswordverify())) {
+        if (!signupRequest.getPassword().equals(signupRequest.getPasswordverify())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Passwords do not match!"));
         }
 
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
-        }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signupRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+        User user = new User(signupRequest.getEmail(),
+                signupRequest.getEmail(),
+                encoder.encode(signupRequest.getPassword()));
 
-        Set<String> strRoles = signUpRequest.getRoles();
+        Set<String> strRoles = signupRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {

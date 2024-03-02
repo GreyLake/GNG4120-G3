@@ -2,7 +2,7 @@
   <div class="p-4 bg-white rounded shadow-lg">
     <h2 class="mb-2 text-center">Sign In</h2>
     <p class="text-center lead">Sign In to access resources</p>
-    <form method="POST" th:object="${signinForm}" th:action="@{/api/auth/signin}">
+    <form method="POST" action="#" th:object="${signinRequest}" th:action="@{/api/auth/signin}">
       <section class="row g-2">
         <div class="form-group form-floating col-md-12">
           <input type="email" th:field="*{email}" class="form-control form-control-lg mb-3 inputSize" placeholder="Email" id="emailInput" required>

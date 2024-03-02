@@ -2,7 +2,7 @@
   <div class="p-4 bg-white rounded shadow-lg">
     <h2 class="mb-2 text-center">Sign Up</h2>
     <p class="text-center lead">Sign Up to access resources</p>
-    <form method="POST" th:object="${signupForm}" th:action="@{/api/auth/signup}">
+    <form method="POST" action="#" th:object="${signupRequest}" th:action="@{/api/auth/signup}" id="signupForm">
 
       <section class="row g-2">
         <div class="form-group form-floating col-md-6">

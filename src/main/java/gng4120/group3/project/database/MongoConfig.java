@@ -37,10 +37,17 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     public MongoClient mongoClient() {
-        ConnectionString connectionString = new ConnectionString("mongodb://" + HOST + ":" + PORT + "/" + DB + "?authSource=admin");
+        /* This code apparently fails to connect to the database:
+         * ConnectionString connectionString = new ConnectionString("mongodb://" + HOST + ":" + PORT + "/" + DB + "?authSource=admin");
+         * MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
+         *         .applyConnectionString(connectionString)
+         *         .credential(MongoCredential.createCredential(USER, DB, PASS.toCharArray()))
+         *         .build();
+         */
+
+        ConnectionString connectionString = new ConnectionString("mongodb://" + USER + ":" + PASS + "@" + HOST + ":" + PORT + "/" + DB + "?authSource=admin");
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
-                .credential(MongoCredential.createCredential(USER, DB, PASS.toCharArray()))
                 .build();
 
         return MongoClients.create(mongoClientSettings);

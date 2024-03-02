@@ -17,10 +17,6 @@ public class SignupRequest {
     private String lastname;
 
     @NotBlank
-    @Size(min = 3, max = 20)
-    private String username;
-
-    @NotBlank
     @Size(max = 120)
     @Email
     private String email;
@@ -46,14 +42,6 @@ public class SignupRequest {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getEmail() {
