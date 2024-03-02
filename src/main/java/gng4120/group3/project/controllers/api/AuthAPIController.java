@@ -3,7 +3,7 @@ package gng4120.group3.project.controllers.api;
 import gng4120.group3.project.models.ERole;
 import gng4120.group3.project.models.Role;
 import gng4120.group3.project.models.User;
-import gng4120.group3.project.payload.request.LoginRequest;
+import gng4120.group3.project.payload.request.SigninRequest;
 import gng4120.group3.project.payload.request.SignupRequest;
 import gng4120.group3.project.payload.response.MessageResponse;
 import gng4120.group3.project.payload.response.UserInfoResponse;
@@ -22,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -30,9 +31,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RestController
+@Controller
 @RequestMapping("/api/auth")
-public class AuthController {
+public class AuthAPIController {
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -49,10 +50,10 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody SigninRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -71,26 +72,30 @@ public class AuthController {
                         roles));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+    @RequestMapping(value = "/signup", method = RequestMethod.POST)
+    public ResponseEntity<?> registerUser(@ModelAttribute("signupRequest") SignupRequest signupRequest) {
+
+        System.out.println("Test!");
+
+        if (!signupRequest.getPassword().equals(signupRequest.getPasswordverify())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+                    .body(new MessageResponse("Error: Passwords do not match!"));
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+
+        if (userRepository.existsByEmail(signupRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
+        User user = new User(signupRequest.getEmail(),
+                signupRequest.getEmail(),
+                encoder.encode(signupRequest.getPassword()));
 
-        Set<String> strRoles = signUpRequest.getRoles();
+        Set<String> strRoles = signupRequest.getRoles();
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {

@@ -2,19 +2,18 @@ package gng4120.group3.project.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class LoginRequest {
+public class SigninRequest {
     @NotBlank
-    private String username;
-
+    private String email;
     @NotBlank
     private String password;
 
-    public String getUsername() {
-        return username;
+    public String getEmail() {
+        return email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {

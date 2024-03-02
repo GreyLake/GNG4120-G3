@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org"
+      lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}" media="all">
+  <link rel="stylesheet" th:href="@{/css/common.css}" media="all">
+  <link rel="stylesheet" th:href="@{/css/auth.css}" media="all">
+
+  <title>Moo Money</title>
+</head>
+  <body>
+    <section id="bodySection">
+
+      <section th:replace="~{fragments/page/navbar :: section}"></section>
+
+      <section id="pageSection" style="background-color: #eee;">
+        <div class="auth-container">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-6 col-12 mx-auto">
+                <!-- Render content for isNew page -->
+                <div th:if="${isNew}">
+                  <!-- Include the isNew fragment from a different directory -->
+                  <div th:replace="~{fragments/account/signup :: section(signupForm=${signupRequest})}"></div>
+                </div>
+
+                <!-- Render content for signin page -->
+                <div th:unless="${isNew}">
+                  <!-- Include the signin fragment from a different directory -->
+                  <div th:replace="~{fragments/account/signin :: section(signinForm=${signinRequest})}"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section th:replace="~{fragments/page/footer :: section}"></section>
+
+    </section>
+
+    <script th:src="@{/js/auth.js}"></script>
+  </body>
+</html>
