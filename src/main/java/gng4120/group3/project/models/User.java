@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Encrypted;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class User {
     private String lastname;
 
     @NotBlank
-    @Size(max = 20)
+    @Size(max = 120)
     private String username;
 
     @NotBlank

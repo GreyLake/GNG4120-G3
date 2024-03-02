@@ -5,30 +5,28 @@ import gng4120.group3.project.models.Role;
 import gng4120.group3.project.models.User;
 import gng4120.group3.project.payload.request.SigninRequest;
 import gng4120.group3.project.payload.request.SignupRequest;
-import gng4120.group3.project.payload.response.MessageResponse;
-import gng4120.group3.project.payload.response.UserInfoResponse;
 import gng4120.group3.project.database.repository.RoleRepository;
 import gng4120.group3.project.database.repository.UserRepository;
 import gng4120.group3.project.security.jwt.JwtUtils;
 import gng4120.group3.project.security.services.UserDetailsImpl;
-import jakarta.validation.Valid;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @Controller
@@ -49,11 +47,11 @@ public class AuthAPIController {
     @Autowired
     JwtUtils jwtUtils;
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody SigninRequest loginRequest) {
+    @PostMapping(value = "/signin")
+    public String authenticateUser(@ModelAttribute("signinRequest") SigninRequest signinRequest, HttpServletResponse response) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(signinRequest.getEmail(), signinRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -61,33 +59,42 @@ public class AuthAPIController {
 
         ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+        // Add JWT cookie to the response
+        response.addHeader(HttpHeaders.SET_COOKIE, jwtCookie.toString());
 
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(new UserInfoResponse(userDetails.getId(),
-                        userDetails.getUsername(),
-                        userDetails.getEmail(),
-                        roles));
+        // Redirect to the home page (/)
+        return "redirect:/";
     }
 
-    @RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public ResponseEntity<?> registerUser(@ModelAttribute("signupRequest") SignupRequest signupRequest) {
+    @PostMapping(value = "/signout")
+    public String unauthenticateUser(RedirectAttributes redirectAttributes,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
+        // Invalidate the user's session
+        request.getSession().invalidate();
+        // Remove any authentication-related data
+        SecurityContextHolder.clearContext();
+        // Remove JWT cookie
+        ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        redirectAttributes.addFlashAttribute("signoutMessage", "You've Signed Out Successfully!");
+        return "redirect:/";
+    }
 
-        System.out.println("Test!");
 
-        if (!signupRequest.getPassword().equals(signupRequest.getPasswordverify())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Passwords do not match!"));
+        @PostMapping(value = "/signup")
+    public String registerUser(@ModelAttribute("signupRequest") SignupRequest signupRequest, RedirectAttributes redirectAttributes) {
+
+        if(!signupRequest.getPassword().equals(signupRequest.getPasswordverify())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Passwords do not match!");
+            redirectAttributes.addAttribute("isNew", true);
+            return "redirect:/account/auth?error"; // Return the name of the view for the registration page
         }
 
-
-        if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+        if(userRepository.existsByEmail(signupRequest.getEmail())) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Email is already in use!");
+            redirectAttributes.addAttribute("isNew", true);
+            return "redirect:/account/auth?error"; // Return the name of the view for the registration page
         }
 
         // Create new user's account
@@ -99,34 +106,40 @@ public class AuthAPIController {
         Set<Role> roles = new HashSet<>();
 
         if (strRoles == null) {
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            Role userRole;
+            try {
+                ERole defaultRole = ERole.ROLE_USER;
+                userRole = roleRepository.findByName(defaultRole)
+                        .orElseThrow(() -> new RuntimeException("Role " + defaultRole + " not found."));
+                roles.add(userRole);
+            } catch (RuntimeException e) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Server Error: " + e.getMessage());
+                e.printStackTrace();
+                redirectAttributes.addAttribute("isNew", true);
+                return "redirect:/account/auth?error"; // Return the name of the view for the registration page
+            }
             roles.add(userRole);
         } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin" -> {
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-                    }
-                    case "mod" -> {
-                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(modRole);
-                    }
-                    default -> {
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                    }
-                }
-            });
+            try {
+                strRoles.forEach(role -> {
+                    ERole eRole = ERole.valueOf(role.toUpperCase());
+                    Role existingRole = roleRepository.findByName(eRole)
+                            .orElseThrow(() -> new RuntimeException("Role " + eRole + " not found."));
+                    roles.add(existingRole);
+                });
+            } catch (RuntimeException e) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Server Error: " + e.getMessage());
+                e.printStackTrace();
+                redirectAttributes.addAttribute("isNew", true);
+                return "redirect:/account/auth?error"; // Return the name of the view for the registration page
+            }
         }
 
         user.setRoles(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        redirectAttributes.addFlashAttribute("successMessage", "Account Registered Successfully! Please Sign In.");
+        redirectAttributes.addAttribute("isNew", false);
+        return "redirect:/account/auth?success";
     }
 }

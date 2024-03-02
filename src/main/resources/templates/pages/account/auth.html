@@ -23,15 +23,22 @@
           <div class="container">
             <div class="row">
               <div class="col-lg-6 col-12 mx-auto">
-                <!-- Render content for isNew page -->
+
+                <div th:if="${errorMessage}" class="alert alert-danger align-items-center" role="alert">
+                  <!-- Error message container -->
+                  <p class="align-middle" th:text="${errorMessage}"></p>
+                </div>
+                <div th:if="${successMessage}" class="alert alert-success align-items-center" role="alert">
+                  <!-- Success message container -->
+                  <p class="align-middle" th:text="${successMessage}"></p>
+                </div>
                 <div th:if="${isNew}">
-                  <!-- Include the isNew fragment from a different directory -->
+                  <!-- Render content for signup page -->
                   <div th:replace="~{fragments/account/signup :: section(signupForm=${signupRequest})}"></div>
                 </div>
 
-                <!-- Render content for signin page -->
                 <div th:unless="${isNew}">
-                  <!-- Include the signin fragment from a different directory -->
+                  <!-- Render content for signin page -->
                   <div th:replace="~{fragments/account/signin :: section(signinForm=${signinRequest})}"></div>
                 </div>
               </div>

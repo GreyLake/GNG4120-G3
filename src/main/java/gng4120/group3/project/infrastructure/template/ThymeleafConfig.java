@@ -1,4 +1,4 @@
-package gng4120.group3.project.infrastructure;
+package gng4120.group3.project.infrastructure.template;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

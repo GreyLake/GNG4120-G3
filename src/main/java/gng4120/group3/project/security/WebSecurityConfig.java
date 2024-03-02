@@ -70,6 +70,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/account/0/**").authenticated()
                         // Main pages, and viewing can be done by anyone
                         .anyRequest().permitAll()
+
                 );
 
         http.authenticationProvider(authenticationProvider());
