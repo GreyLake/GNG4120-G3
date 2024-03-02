@@ -1,7 +1,20 @@
 body {
-    /* Height of navbar-expand-lg */
-    padding-top: 57px;
     color: #959595;
+}
+
+:root {
+    --top-margin: 57px; /* Adjust as needed */
+}
+
+#bodySection {
+    /* Height of navbar-expand-lg */
+    padding-top: var(--top-margin);
+}
+
+#pageSection {
+    /* Subtracts the navbar size from the vp size */
+    min-height: calc(100vh - var(--top-margin));
+    height: calc(100vh - var(--top-margin));
 }
 
 h1, h2, h3, h4, h5, h6 {

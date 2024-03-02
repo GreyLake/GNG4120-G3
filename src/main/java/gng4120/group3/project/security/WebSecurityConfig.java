@@ -64,9 +64,9 @@ public class WebSecurityConfig {
                         // API requests must be authenticated (except for test)
                         .requestMatchers("/api/auth/**").authenticated()
                         .requestMatchers("/api/test/**").permitAll()
-                        // Account signin and signup must be accessed by nonuser
+                        // Account signin and isNew must be accessed by nonuser
                         .requestMatchers("/account/signin").anonymous()
-                        .requestMatchers("/account/signup").anonymous()
+                        .requestMatchers("/account/isNew").anonymous()
                         // Account access must be authenticated
                         .requestMatchers("/account/0/**").authenticated()
                         // Main pages, and viewing can be done by anyone

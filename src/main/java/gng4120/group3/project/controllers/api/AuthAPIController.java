@@ -3,7 +3,7 @@ package gng4120.group3.project.controllers.api;
 import gng4120.group3.project.models.ERole;
 import gng4120.group3.project.models.Role;
 import gng4120.group3.project.models.User;
-import gng4120.group3.project.payload.request.LoginRequest;
+import gng4120.group3.project.payload.request.SigninRequest;
 import gng4120.group3.project.payload.request.SignupRequest;
 import gng4120.group3.project.payload.response.MessageResponse;
 import gng4120.group3.project.payload.response.UserInfoResponse;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/auth")
-public class AuthController {
+public class AuthAPIController {
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -49,10 +49,10 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody SigninRequest loginRequest) {
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -71,8 +71,17 @@ public class AuthController {
                         roles));
     }
 
+
+
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+
+        if (!signUpRequest.getPassword().equals(signUpRequest.getPasswordverify())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Passwords do not match!"));
+        }
+
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()

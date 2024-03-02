@@ -1,3 +1,63 @@
-<form action="">
-  Signup Form
-</form>
+<section id="signupSection">
+  <div class="p-4 bg-white rounded shadow-lg">
+    <h2 class="mb-2 text-center">Sign Up</h2>
+    <p class="text-center lead">Sign Up to access resources</p>
+    <form method="POST" th:object="${signupForm}" th:action="@{/api/auth/signup}">
+
+      <section class="row g-2">
+        <div class="form-group form-floating col-md-6">
+          <input type="text" th:field="*{firstname}" class="form-control form-control-lg mb-3 inputSize" placeholder="First Name" id="firstnameInput" required>
+          <label for="firstnameInput">First Name</label>
+          <span class="has-error" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}"></span>
+        </div>
+
+        <div class="form-group form-floating col-md-6">
+          <input type="text" th:field="*{lastname}" class="form-control form-control-lg mb-3 inputSize" placeholder="Last Name" id="lastnameInput" required>
+          <label for="lastnameInput">Last Name</label>
+          <span class="has-error" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}"></span>
+        </div>
+      </section>
+
+      <section class="row g-2">
+        <div class="form-group form-floating col-md-10">
+          <input type="email" th:field="*{email}" class="form-control form-control-lg mb-3 inputSize" placeholder="Email" id="emailInput" required>
+          <label for="emailInput">Email Address</label>
+          <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+        </div>
+      </section>
+
+      <section class="row g-2">
+        <div class="form-group form-floating col-md-8">
+          <input type="password" th:field="*{password}" class="form-control form-control-lg mb-3 inputSize" placeholder="Password" id="passwordInput" required>
+          <label for="passwordInput">Password</label>
+          <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+        </div>
+      </section>
+
+      <section class="row g-2">
+        <div class="form-group form-floating col-md-8">
+          <input type="password" th:field="*{passwordverify}" class="form-control form-control-lg mb-3 inputSize" placeholder="Confirm Your Password" id="passwordverifyInput" required>
+          <label for="passwordverifyInput">Verify Password</label>
+          <span class="has-error" th:if="${#fields.hasErrors('passwordverify')}" th:errors="*{passwordverify}"></span>
+        </div>
+      </section>
+
+      <section class="row g-2">
+        <div class="col-12">
+          <input class="form-check-input mb-3" type="checkbox" value="" id="conditionsInput" required>
+          <label class="form-check-label" for="conditionsInput">Agree to terms and conditions</label>
+        </div>
+      </section>
+
+      <section class="row g-2 pt-3">
+        <div class="col-12">
+          <button class="btn btn-success btn-lg w-100 shadow-lg" type="submit">Sign Up</button>
+        </div>
+      </section>
+
+    </form>
+    <div class="text-center pt-4">
+      <p class="m-0">Already have an account? <a th:href="@{/account/auth(isNew=false)}" class="text-dark font-weight-bold">Sign In</a></p>
+    </div>
+  </div>
+</section>
