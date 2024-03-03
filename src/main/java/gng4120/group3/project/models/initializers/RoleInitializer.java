@@ -32,8 +32,7 @@ public class RoleInitializer {
     }
 
     private void saveRoleIfNotExists(ERole roleName) {
-
-        // If roles don't exist, create and save them
+        // Check if role exists
         Optional<Role> existingRole = roleRepository.findByName(roleName);
         if (existingRole.isEmpty()) {
             // Save roles to the database using the repository

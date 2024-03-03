@@ -42,33 +42,27 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     public MongoClient mongoClient() {
-        /* This code apparently fails to connect to the database:
-         * ConnectionString connectionString = new ConnectionString("mongodb://" + HOST + ":" + PORT + "/" + DB + "?authSource=admin");
-         * MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
-         *         .applyConnectionString(connectionString)
-         *         .credential(MongoCredential.createCredential(USER, DB, PASS.toCharArray()))
-         *         .build();
-         */
+
+        /* This code apparently USED TO fail to connect to the database: */
+        // Original: + "?authSource=admin"
+        ConnectionString connectionString = new ConnectionString("mongodb://" + HOST + ":" + PORT + "/" + DB);
+        MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
+                .applyConnectionString(connectionString)
+                .credential(MongoCredential.createScramSha1Credential(USER, "admin", PASS.toCharArray()))
+                .build();
+
+        /* This code Works locally but not remotely.
+        ConnectionString connectionString = new ConnectionString("mongodb://" + USER + ":" + PASS + "@" + HOST + ":" + PORT + "/" + DB + "?authSource=admin");
+        MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
+                .applyConnectionString(connectionString)
+                .build();
+        */
 
         MongoClient mongoClient = null;
         try {
-            MongoClientSettings settings = MongoClientSettings.builder()
-                    .applyConnectionString(new ConnectionString("mongodb://" + HOST + ":" + PORT))
-                    .build();
-            mongoClient = MongoClients.create(settings);
-            // Attempt to connect to the database
-            MongoDatabase db = mongoClient.getDatabase(DB);
-            db.listCollectionNames().first(); // Try executing a simple operation
+            mongoClient = MongoClients.create(mongoClientSettings);
             isMongoDBAvailable = true;
-        } catch (Exception e) {
-            // Handle MongoDB not being available
-            System.out.println("MongoDB is not available.");
-            isMongoDBAvailable = false;
-        } finally {
-            if (mongoClient != null) {
-                mongoClient.close();
-            }
-        }
+        } catch (MongoSocketException ignored){}
         return mongoClient;
     }
 
