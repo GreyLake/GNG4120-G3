@@ -3,11 +3,13 @@ package gng4120.group3.project.database;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
+import com.mongodb.MongoSocketException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.data.mongodb.monitor.ConnectionMetrics;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -30,6 +32,8 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
     @Value("${MONGODB_PASSWORD}")
     private String PASS;
 
+    private boolean isMongoDBAvailable = false;
+
     @Override
     protected String getDatabaseName() {
         return DB;
@@ -37,20 +41,39 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Override
     public MongoClient mongoClient() {
-        /* This code apparently fails to connect to the database:
-         * ConnectionString connectionString = new ConnectionString("mongodb://" + HOST + ":" + PORT + "/" + DB + "?authSource=admin");
-         * MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
-         *         .applyConnectionString(connectionString)
-         *         .credential(MongoCredential.createCredential(USER, DB, PASS.toCharArray()))
-         *         .build();
-         */
 
-        ConnectionString connectionString = new ConnectionString("mongodb://" + USER + ":" + PASS + "@" + HOST + ":" + PORT + "/" + DB + "?authSource=admin");
+        /* This code apparently USED TO fail to connect to the database: */
+        // Original: + "?authSource=admin"
+        ConnectionString connectionString = new ConnectionString("mongodb://" + HOST + ":" + PORT + "/" + DB);
         MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
                 .applyConnectionString(connectionString)
+                .credential(MongoCredential.createScramSha1Credential(USER, "admin", PASS.toCharArray()))
                 .build();
 
-        return MongoClients.create(mongoClientSettings);
+            /* This code Works locally but not remotely.
+            ConnectionString connectionString = new ConnectionString("mongodb://" + USER + ":" + PASS + "@" + HOST + ":" + PORT + "/" + DB + "?authSource=admin");
+            MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
+                    .applyConnectionString(connectionString)
+                    .build();
+            */
+
+        MongoClient mongoClient = null;
+
+        try{
+            mongoClient = MongoClients.create(mongoClientSettings);
+
+            // TODO : Add Mongo Connection Test and Handle Properly
+
+            // Verify MongoDB connection by attempting to list databases
+            mongoClient.listDatabaseNames().first();
+            isMongoDBAvailable = true;
+        } catch (Exception ignored){ return mongoClient; }
+
+        return mongoClient;
+    }
+
+    public boolean isMongoDBAvailable(){
+        return isMongoDBAvailable;
     }
 
     @Override
