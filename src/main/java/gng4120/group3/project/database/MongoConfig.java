@@ -6,11 +6,10 @@ import com.mongodb.MongoCredential;
 import com.mongodb.MongoSocketException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.internal.MongoClientImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
+import org.springframework.data.mongodb.monitor.ConnectionMetrics;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -51,23 +50,30 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
                 .credential(MongoCredential.createScramSha1Credential(USER, "admin", PASS.toCharArray()))
                 .build();
 
-        /* This code Works locally but not remotely.
-        ConnectionString connectionString = new ConnectionString("mongodb://" + USER + ":" + PASS + "@" + HOST + ":" + PORT + "/" + DB + "?authSource=admin");
-        MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
-                .applyConnectionString(connectionString)
-                .build();
-        */
+            /* This code Works locally but not remotely.
+            ConnectionString connectionString = new ConnectionString("mongodb://" + USER + ":" + PASS + "@" + HOST + ":" + PORT + "/" + DB + "?authSource=admin");
+            MongoClientSettings mongoClientSettings = MongoClientSettings.builder()
+                    .applyConnectionString(connectionString)
+                    .build();
+            */
 
         MongoClient mongoClient = null;
-        try {
+
+        try{
             mongoClient = MongoClients.create(mongoClientSettings);
+
+            // TODO : Add Mongo Connection Test and Handle Properly
+
+            // Verify MongoDB connection by attempting to list databases
+            mongoClient.listDatabaseNames().first();
             isMongoDBAvailable = true;
-        } catch (MongoSocketException ignored){}
+        } catch (Exception ignored){ return mongoClient; }
+
         return mongoClient;
     }
 
     public boolean isMongoDBAvailable(){
-        return  isMongoDBAvailable;
+        return isMongoDBAvailable;
     }
 
     @Override
