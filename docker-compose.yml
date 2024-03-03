@@ -1,13 +1,12 @@
 version: "3.8"
 
 services:
-  mongo_db:
-    networks:
-      - web_network
+
+  web_db:
     image: mongo:latest
     restart: unless-stopped
     env_file: ./.env
-    container_name: "web-database"
+    container_name: "web-db"
     command: [--auth]
     environment:
       - MONGO_INITDB_DATABASE=$MONGODB_DATABASE
@@ -17,11 +16,10 @@ services:
       - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
     volumes:
       - db:/data/db
+
   web_app:
     depends_on:
-      - mongo_db
-    networks:
-      - web_network
+      - web_db
     build: .
     image: ghcr.io/greylake/web-app:latest
     restart: on-failure
@@ -33,9 +31,6 @@ services:
       - .m2:/root/.m2
     stdin_open: true
     tty: true
-networks:
-  web_network:
-    driver: bridge
 
 volumes:
   db:
