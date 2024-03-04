@@ -1,5 +1,6 @@
-package gng4120.group3.project.models;
+package gng4120.group3.project.models.user;
 
+import gng4120.group3.project.models.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -18,27 +19,27 @@ public class User {
 
     @NotBlank
     @Size(max = 120)
-    private String firstname;
+    protected String firstname = "";
 
     @NotBlank
     @Size(max = 120)
-    private String lastname;
+    protected String lastname = "";
 
     @NotBlank
     @Size(max = 120)
-    private String username;
+    protected String username = "";
 
     @NotBlank
     @Size(max = 120)
     @Email
-    private String email;
+    protected String email = "";
 
     @NotBlank
     @Size(max = 120)
-    private String password;
+    private String password = "";
 
     @DBRef
-    private Set<Role> roles = new HashSet<>();
+    protected Set<Role> roles = new HashSet<>();
 
     public User() {
     }
@@ -55,6 +56,22 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getUsername() {

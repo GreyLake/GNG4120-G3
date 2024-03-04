@@ -2,7 +2,7 @@ package gng4120.group3.project.controllers.api;
 
 import gng4120.group3.project.models.ERole;
 import gng4120.group3.project.models.Role;
-import gng4120.group3.project.models.User;
+import gng4120.group3.project.models.user.User;
 import gng4120.group3.project.payload.request.SigninRequest;
 import gng4120.group3.project.payload.request.SignupRequest;
 import gng4120.group3.project.database.repository.RoleRepository;
@@ -13,6 +13,7 @@ import gng4120.group3.project.security.services.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
@@ -21,6 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -48,12 +50,15 @@ public class AuthAPIController {
     JwtUtils jwtUtils;
 
     @PostMapping(value = "/signin")
-    public String authenticateUser(@ModelAttribute("signinRequest") SigninRequest signinRequest, HttpServletResponse response) {
+    public String authenticateUser(@ModelAttribute("signinRequest") SigninRequest signinRequest, HttpServletResponse response, HttpServletRequest request) {
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signinRequest.getEmail(), signinRequest.getPassword()));
 
+        HttpSession session = request.getSession();
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
@@ -70,6 +75,20 @@ public class AuthAPIController {
     public String unauthenticateUser(RedirectAttributes redirectAttributes,
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
+        clearUser(request, response);
+        redirectAttributes.addFlashAttribute("signoutMessage", "You've Signed Out Successfully!");
+        return "redirect:/";
+    }
+
+    @GetMapping(value = "/invalidate")
+    public String unauthenticateUser(HttpServletRequest request,
+                                     HttpServletResponse response) {
+        clearUser(request, response);
+        return "redirect:/";
+    }
+
+    private void clearUser(HttpServletRequest request,
+                          HttpServletResponse response){
         // Invalidate the user's session
         request.getSession().invalidate();
         // Remove any authentication-related data
@@ -77,8 +96,6 @@ public class AuthAPIController {
         // Remove JWT cookie
         ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-        redirectAttributes.addFlashAttribute("signoutMessage", "You've Signed Out Successfully!");
-        return "redirect:/";
     }
 
 
