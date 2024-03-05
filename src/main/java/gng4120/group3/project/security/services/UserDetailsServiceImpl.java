@@ -23,4 +23,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return UserDetailsImpl.build(user);
     }
+
+    public UserDetails loadUserByObject(User user) {
+        return UserDetailsImpl.build(user);
+    }
 }

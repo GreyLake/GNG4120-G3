@@ -5,8 +5,8 @@
     <div class="container-fluid py-5 px-md-5 feature">
         <div class="mh-100 min-vh-100 h-100">
             <div class="p-5 mb-4 bg-light rounded-3 row justify-content-center">
-                <div th:if="${currentUser != null}">
-                    <h1>Welcome, <span th:text="${currentUser.firstname}"></span> <span th:text="${currentUser.lastname}"></span>! 🐮</h1>
+                <div th:if="${#ctx.session.currentUser != null}">
+                    <h1>Welcome, <span th:text="${#ctx.session.currentUser.firstname}"></span> <span th:text="${#ctx.session.currentUser.lastname}"></span>! 🐮</h1>
                     <p>We're working hard to bring you an amazing website. Please check back later!</p>
                 </div>
             </div>

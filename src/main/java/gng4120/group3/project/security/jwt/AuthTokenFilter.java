@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -53,13 +54,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         // Check if user is authenticated
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated() || authentication instanceof AnonymousAuthenticationToken) {
-            logger.info(request.getRequestURL().toString());
+            logger.debug(request.getRequestURL().toString());
             if(authentication != null)
-                logger.info(authentication.toString());
+                logger.debug(authentication.toString());
             checkJwt(request, response, session);
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             if(auth != null)
-                logger.info(auth.toString());
+                logger.debug(auth.toString());
         }
 
         filterChain.doFilter(request, response);
@@ -71,7 +72,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         List<String> excludeUrlPatterns = List.of(
                 "/js/**",
                 "/svg/**",
-                "/css/**"
+                "/css/**",
+                "/api/auth/invalidate"
         );
 
         return excludeUrlPatterns
@@ -85,18 +87,33 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUserNameFromJwtToken(jwt);
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                Optional<User> user = userRepository.findByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
-                        userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
-                // Set currentUser to null if not authenticated
-                user.ifPresent(value -> session.setAttribute("currentUser", new UserRef(value)));
+                Optional<User> user = Optional.empty();
+
+                if(userRepository.existsByEmail(username)){
+                    user = userRepository.findByEmail(username);
+                }
+                else if(userRepository.existsByUsername(username)){
+                    user = userRepository.findByUsername(username);
+                }
+  
+                if(user.isPresent()) {
+                    UserDetails userDetails = userDetailsService.loadUserByObject(user.get());
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+                            userDetails.getAuthorities());
+
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
+                    // Set currentUser to null if not authenticated
+                    session.setAttribute("currentUser", new UserRef(user.get()));
+                    return;
+                }
+                else{
+                    throw new AccountNotFoundException();
+                }
             }
         } catch (Exception e) {
-            logger.error("Cannot set user authentication: {}", e);
+            logger.warn("Cannot set user authentication: " + e.getCause());
 
             // Invalidate the user. (rid of cookies)
             try { response.sendRedirect("/api/auth/invalidate"); } catch (Exception ignored) {}

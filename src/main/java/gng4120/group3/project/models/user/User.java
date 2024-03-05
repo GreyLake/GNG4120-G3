@@ -1,13 +1,13 @@
 package gng4120.group3.project.models.user;
 
 import gng4120.group3.project.models.Role;
+import gng4120.group3.project.payload.request.SignupRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Encrypted;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,35 +19,36 @@ public class User {
 
     @NotBlank
     @Size(max = 120)
-    protected String firstname = "";
+    private String firstname = null;
 
     @NotBlank
     @Size(max = 120)
-    protected String lastname = "";
+    private String lastname = null;
 
     @NotBlank
     @Size(max = 120)
-    protected String username = "";
+    private String username = null;
 
     @NotBlank
     @Size(max = 120)
     @Email
-    protected String email = "";
+    private String email = null;
 
     @NotBlank
     @Size(max = 120)
-    private String password = "";
+    private String password = null;
 
     @DBRef
-    protected Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
-    public User() {
-    }
+    public User() {}
 
-    public User(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
+    public User(SignupRequest request) {
+        this.firstname = request.getFirstname();
+        this.lastname = request.getLastname();
+        this.email = request.getEmail();
+        this.password = request.getPassword();
+        this.username = request.getUsername();
     }
 
     public String getId() {
@@ -104,5 +105,17 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }

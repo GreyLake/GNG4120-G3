@@ -4,16 +4,16 @@ import jakarta.validation.constraints.NotBlank;
 
 public class SigninRequest {
     @NotBlank
-    private String email;
+    private String emailUser;
     @NotBlank
     private String password;
 
-    public String getEmail() {
-        return email;
+    public String getEmailUser() {
+        return emailUser;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmailUser(String emailUser) {
+        this.emailUser = emailUser;
     }
 
     public String getPassword() {

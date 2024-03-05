@@ -20,6 +20,14 @@
 
       <section class="row g-2">
         <div class="form-group form-floating col-md-10">
+          <input type="text" th:field="*{username}" class="form-control form-control-lg mb-3 inputSize" placeholder="Email" id="emailInput" required>
+          <label for="emailInput">Username</label>
+          <span class="has-error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+        </div>
+      </section>
+
+      <section class="row g-2">
+        <div class="form-group form-floating col-md-10">
           <input type="email" th:field="*{email}" class="form-control form-control-lg mb-3 inputSize" placeholder="Email" id="emailInput" required>
           <label for="emailInput">Email Address</label>
           <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
@@ -27,15 +35,13 @@
       </section>
 
       <section class="row g-2">
-        <div class="form-group form-floating col-md-8">
+        <div class="form-group form-floating col-md-6">
           <input type="password" th:field="*{password}" class="form-control form-control-lg mb-3 inputSize" placeholder="Password" id="passwordInput" required>
           <label for="passwordInput">Password</label>
           <span class="has-error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
         </div>
-      </section>
 
-      <section class="row g-2">
-        <div class="form-group form-floating col-md-8">
+        <div class="form-group form-floating col-md-6">
           <input type="password" th:field="*{passwordverify}" class="form-control form-control-lg mb-3 inputSize" placeholder="Confirm Your Password" id="passwordverifyInput" required>
           <label for="passwordverifyInput">Verify Password</label>
           <span class="has-error" th:if="${#fields.hasErrors('passwordverify')}" th:errors="*{passwordverify}"></span>
