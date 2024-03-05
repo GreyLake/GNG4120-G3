@@ -5,9 +5,9 @@
     <form method="POST" action="#" th:object="${signinRequest}" th:action="@{/api/auth/signin}">
       <section class="row g-2">
         <div class="form-group form-floating col-md-12">
-          <input type="email" th:field="*{email}" class="form-control form-control-lg mb-3 inputSize" placeholder="Email" id="emailInput" required>
-          <label for="emailInput">Email Address</label>
-          <span class="has-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+          <input type="text" th:field="*{emailUser}" class="form-control form-control-lg mb-3 inputSize" placeholder="Email" id="emailUserInput" required>
+          <label for="emailUserInput">Email / Username</label>
+          <span class="has-error" th:if="${#fields.hasErrors('emailUser')}" th:errors="*{emailUser}"></span>
         </div>
       </section>
 
