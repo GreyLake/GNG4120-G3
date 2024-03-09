@@ -1,7 +1,7 @@
 package gng4120.group3.project.security.services;
 
 import gng4120.group3.project.models.user.User;
-import gng4120.group3.project.database.repository.UserRepository;
+import gng4120.group3.project.database.repository.account.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

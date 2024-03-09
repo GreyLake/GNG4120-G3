@@ -1,13 +1,13 @@
 package gng4120.group3.project.controllers.api;
 
-import gng4120.group3.project.models.ERole;
-import gng4120.group3.project.models.Role;
+import gng4120.group3.project.models.user.ERole;
+import gng4120.group3.project.models.user.Role;
 import gng4120.group3.project.models.user.User;
 import gng4120.group3.project.models.user.UserRef;
 import gng4120.group3.project.payload.request.SigninRequest;
 import gng4120.group3.project.payload.request.SignupRequest;
-import gng4120.group3.project.database.repository.RoleRepository;
-import gng4120.group3.project.database.repository.UserRepository;
+import gng4120.group3.project.database.repository.account.RoleRepository;
+import gng4120.group3.project.database.repository.account.UserRepository;
 import gng4120.group3.project.security.jwt.JwtUtils;
 import gng4120.group3.project.security.services.UserDetailsImpl;
 
@@ -105,7 +105,7 @@ public class AuthAPIController {
         return "redirect:/";
     }
 
-    @PostMapping(value = "/signout")
+    @GetMapping(value = "/signout")
     public String unauthenticateUser(RedirectAttributes redirectAttributes,
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
@@ -133,7 +133,7 @@ public class AuthAPIController {
     }
 
 
-        @PostMapping(value = "/signup")
+    @PostMapping(value = "/signup")
     public String registerUser(@ModelAttribute("signupRequest") SignupRequest signupRequest, RedirectAttributes redirectAttributes) {
 
         if(!signupRequest.getPassword().equals(signupRequest.getPasswordverify())) {

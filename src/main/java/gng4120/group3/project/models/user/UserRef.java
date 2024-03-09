@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 public class UserRef extends User {
 
-    public String test = "Hello World";
-
     public UserRef(User user) {
         // You can include any other fields you want to expose
         this.setFirstname(user.getFirstname());

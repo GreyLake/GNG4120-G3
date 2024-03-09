@@ -1,9 +1,10 @@
 package gng4120.group3.project.models.initializers;
 
+
 import gng4120.group3.project.database.MongoConfig;
-import gng4120.group3.project.database.repository.account.RoleRepository;
-import gng4120.group3.project.models.user.ERole;
-import gng4120.group3.project.models.user.Role;
+import gng4120.group3.project.database.repository.forum.TopicRepository;
+import gng4120.group3.project.models.forum.ETopic;
+import gng4120.group3.project.models.forum.Topic;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,10 +12,10 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class RoleInitializer {
+public class TopicInitializer {
 
     @Autowired
-    RoleRepository roleRepository;
+    TopicRepository topicRepository;
 
     @Autowired
     private MongoConfig mongoConfig;
@@ -23,19 +24,20 @@ public class RoleInitializer {
     public void init() {
         // Iterate over each enum value and save the role if it doesn't exist
         if(mongoConfig.isMongoDBAvailable()) {
-            for (ERole roleName : ERole.values()) {
-                saveRoleIfNotExists(roleName);
+            for (ETopic topicName : ETopic.values()) {
+                saveRoleIfNotExists(topicName);
             }
         }
     }
 
-    private void saveRoleIfNotExists(ERole roleName) {
+    private void saveRoleIfNotExists(ETopic topicName) {
         // Check if role exists
-        Optional<Role> existingRole = roleRepository.findByName(roleName);
-        if (existingRole.isEmpty()) {
+        Optional<Topic> existingTopic = topicRepository.findByName(topicName);
+        if (existingTopic.isEmpty()) {
             // Save roles to the database using the repository
-            Role role = new Role(roleName);
-            roleRepository.save(role);
+            Topic topic = new Topic(topicName);
+            topicRepository.save(topic);
         }
     }
 }
+

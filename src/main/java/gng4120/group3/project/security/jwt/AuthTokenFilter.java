@@ -1,6 +1,6 @@
 package gng4120.group3.project.security.jwt;
 
-import gng4120.group3.project.database.repository.UserRepository;
+import gng4120.group3.project.database.repository.account.UserRepository;
 import gng4120.group3.project.models.user.User;
 import gng4120.group3.project.models.user.UserRef;
 import gng4120.group3.project.security.services.UserDetailsServiceImpl;
@@ -26,8 +26,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

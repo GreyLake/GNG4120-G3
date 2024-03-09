@@ -1,6 +1,5 @@
 package gng4120.group3.project.models.user;
 
-import gng4120.group3.project.models.Role;
 import gng4120.group3.project.payload.request.SignupRequest;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
