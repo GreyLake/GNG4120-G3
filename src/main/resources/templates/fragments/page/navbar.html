@@ -58,7 +58,7 @@
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <section id="authorized" sec:authorize="isAuthenticated()"> <!-- TODO: Add Account Option List -->
-                                <form method="POST" action="#" th:action="@{/api/auth/signout}">
+                                <form method="GET" action="#" th:action="@{/api/auth/signout}">
                                     <button class="btn btn-outline-primary me-2" type="submit">Sign Out</button>
                                 </form>
                             </section>

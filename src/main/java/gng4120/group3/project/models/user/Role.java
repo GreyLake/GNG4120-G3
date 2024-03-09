@@ -1,9 +1,8 @@
-package gng4120.group3.project.models;
+package gng4120.group3.project.models.user;
 
-import jakarta.annotation.PostConstruct;
+import gng4120.group3.project.models.user.ERole;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "roles")

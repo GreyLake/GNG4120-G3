@@ -1,14 +1,25 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org"
       lang="en">
-<section>
+<section id="authorizedHome">
     <div class="container-fluid py-5 px-md-5 feature">
-        <div class="mh-100 min-vh-100 h-100">
+        <div class="mh-100 h-100">
             <div class="p-5 mb-4 bg-light rounded-3 row justify-content-center">
                 <div th:if="${#ctx.session.currentUser != null}">
                     <h1>Welcome, <span th:text="${#ctx.session.currentUser.firstname}"></span> <span th:text="${#ctx.session.currentUser.lastname}"></span>! 🐮</h1>
                     <p>We're working hard to bring you an amazing website. Please check back later!</p>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid py-5 px-md-5 feature">
+        <div class="mh-100 h-100">
+            <div class="p-5 mb-4 bg-light rounded-3 row justify-content-center">
+                <h1>Visit Our Forums Page! </h1>
+                <p>Share your <strong>Experiences</strong>, <strong>Questions</strong>, and <strong>Comments</strong> on our forum!</p>
+                <form method="GET" th:action="@{/forum/}">
+                    <button class="btn btn-outline-primary me-2" type="submit">Visit Forums</button>
+                </form>
             </div>
         </div>
     </div>
