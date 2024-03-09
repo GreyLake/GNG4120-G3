@@ -22,7 +22,7 @@
         <div th:if="${exception != null}">
           <h1>
             <span th:if="${exception.statusCode}" th:text="${exception.statusCode}"></span>
-            <span th:if="${exception.message}" th:text="${exception.message}">Error</span>
+            <span th:if="${exception.message}" th:text="${exception.message}">Error</span> 🐮
           </h1>
           <p>
             <span th:if="${exception.errorCode}" th:text="${exception.errorCode}"></span> Occurred at URL:
@@ -31,7 +31,7 @@
           <p th:if="${exception.timestamp}" th:text="${exception.timestamp}"></p>
         </div>
         <div id="back">
-          <form method="GET" action="/" th:action="@{/}">
+          <form method="GET" th:action="@{/}">
             <button class="btn btn-outline-primary me-2" type="submit">Return Home</button>
           </form>
         </div>

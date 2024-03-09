@@ -23,14 +23,20 @@ public class ForumController {
     @Autowired
     private CommentService commentService;
 
-    @RequestMapping("/")
+    @RequestMapping({"", "/"})
     public String forumsPage( Model model) {
-        return "pages/forum/forums";
+        return "pages/forum/forum";
     }
 
-    @RequestMapping("/{id}")
-    public String forumPage(@PathVariable Long id, Model model) {
+    @RequestMapping("/{topic}")
+    public String forumPage(@PathVariable String topic, Model model) {
 
-        return "pages/forum/forum";
+        return "pages/forum/topic";
+    }
+
+    @RequestMapping("/{topic}/{post}")
+    public String forumPage(@PathVariable String topic, @PathVariable Long post, Model model) {
+
+        return "pages/forum/post";
     }
 }
