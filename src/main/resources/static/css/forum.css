@@ -64,7 +64,7 @@ body{margin-top:20px;
     padding: 10px 0 20px;
     border-bottom: 1px solid #f1f1f1;
 }
-.views-number {
+.posts-number {
     font-size: 24px;
     line-height: 18px;
     font-weight: 400;
@@ -126,10 +126,6 @@ a.forum-item-title:hover {
         float: none !important;
     }
 }
-
-
-
-
 
 .ibox {
     clear: both;

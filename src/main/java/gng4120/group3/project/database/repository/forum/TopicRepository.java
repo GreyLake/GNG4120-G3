@@ -11,9 +11,9 @@ import java.util.Optional;
 public interface TopicRepository extends MongoRepository<Topic, String> {
 
     @Query(value = "{}", fields = "{ '_id' : 1 }")
-    List<String> findAllTopicIds();
-
-    Optional<Topic> findByName(ETopic name);
+    List<Topic> findAllTopicIds();
+    Optional<Topic> findByType(ETopic type);
+    boolean existsByType(ETopic type);
     Optional<Topic> findById(String id);
     boolean existsById(String id);
 }

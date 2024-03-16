@@ -84,11 +84,11 @@ public class WebSecurityConfig {
                             }
                         }))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(WebSecurityAccess.FOR_EVERYONE).permitAll()
-                        .requestMatchers(WebSecurityAccess.FOR_ANONYMOUS).anonymous()
-                        .requestMatchers(WebSecurityAccess.FOR_AUTHORIZED_USERS).authenticated()
                         .requestMatchers(WebSecurityAccess.FOR_ADMINS).hasAnyAuthority(WebSecurityAccess.ADMIN_ROLES)
                         .requestMatchers(WebSecurityAccess.FOR_MODERATORS).hasAnyAuthority(WebSecurityAccess.MODERATOR_ROLES)
+                        .requestMatchers(WebSecurityAccess.FOR_AUTHORIZED_USERS).authenticated()
+                        .requestMatchers(WebSecurityAccess.FOR_ANONYMOUS).anonymous()
+                        .requestMatchers(WebSecurityAccess.FOR_EVERYONE).permitAll()
                         // Main pages, and viewing can be done by anyone
                         .anyRequest().permitAll()
                 );

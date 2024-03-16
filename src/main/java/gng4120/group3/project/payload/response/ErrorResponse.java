@@ -1,7 +1,6 @@
 package gng4120.group3.project.payload.response;
 
-import gng4120.group3.project.infrastructure.exceptions.WebAPIException;
-import gng4120.group3.project.infrastructure.exceptions.WebException;
+import gng4120.group3.project.infrastructure.exceptions.ErrorCode;
 
 import java.util.Date;
 
@@ -9,22 +8,13 @@ public class ErrorResponse {
 
     private int statusCode;
     private String status;
-    private WebException.ErrorCode errorCode;
+    private ErrorCode errorCode;
     private String message;
     private String path;
     private Date timestamp;
 
     public ErrorResponse() {
         this.timestamp = new Date();
-    }
-
-    public ErrorResponse(WebAPIException exception) {
-        this();
-        this.statusCode = exception.getStatus().value();
-        this.status = exception.getStatus().toString();
-        this.errorCode = exception.getErrorCode();
-        this.message = exception.getMessage();
-        this.path = exception.getPath();
     }
 
     public int getStatusCode() {
@@ -43,11 +33,11 @@ public class ErrorResponse {
         this.status = status;
     }
 
-    public WebException.ErrorCode getErrorCode() {
+    public ErrorCode getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(WebException.ErrorCode errorCode) {
+    public void setErrorCode(ErrorCode errorCode) {
         this.errorCode = errorCode;
     }
 

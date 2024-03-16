@@ -1,0 +1,22 @@
+<div class="container-fluid py-5 px-md-5 feature">
+  <div class="mh-100 min-vh-100 h-100">
+    <div class="p-5 mb-4 bg-light rounded-3 row justify-content-center">
+      <div th:if="${exception != null}">
+        <h1>
+          <span th:if="${exception.statusCode}" th:text="${exception.statusCode}"></span>
+          <span th:if="${exception.message}" th:text="${exception.message}">Error</span> 🐮
+        </h1>
+        <p>
+          <span th:if="${exception.errorCode}" th:text="${exception.errorCode}"></span> Occurred at URL:
+          <span th:if="${exception.path}" th:text="${exception.path}"></span>
+        </p>
+        <p th:if="${exception.timestamp}" th:text="${exception.timestamp}"></p>
+      </div>
+      <div id="back">
+        <form method="GET" th:action="@{/}">
+          <button class="btn btn-outline-primary me-2" type="submit">Return Home</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

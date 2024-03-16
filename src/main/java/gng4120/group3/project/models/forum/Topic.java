@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -17,15 +18,15 @@ public class Topic {
     private String id;
 
     @NotBlank
-    private ETopic name;
+    private ETopic type;
 
+    @Size(max = 50)
+    private String title;
+    
     @NotBlank
     private String userId;
 
     private List<String> postIds;
-
-    @Size(max = 50)
-    private String title;
 
     @Size(max = 2000)
     private String description;
@@ -44,15 +45,35 @@ public class Topic {
 
     public Topic() {}
 
-    public Topic(ETopic name) {
-        this.name = name;
+    public Topic(ETopic type) {
+        this.type = type;
+
+        // Split the string by underscore and take the last part
+        String[] parts = type.getName().split("_");
+        String parsedString = parts[parts.length - 1].toLowerCase();
+        
+        // Capitalize the first character
+        parsedString = Character.toUpperCase(parsedString.charAt(0)) + parsedString.substring(1);
+        this.title = parsedString;
+
+        this.description = type.getDescription();
+
+        this.creationDate = new Date();
+        this.lastUpdateDate = this.creationDate;
+
+        this.userId = "INTERNAL";
+        this.postIds = Collections.emptyList();
+        this.closed = false;
     }
 
     public Topic(TopicRequest request) {
         this.userId = request.getUserId();
         this.title = request.getTitle();
         this.description = request.getDescription();
-        this.name = request.getName();
+        this.type = request.getName();
+        this.userId = request.getUserId();
+        this.creationDate = new Date();
+        this.lastUpdateDate = this.creationDate;
         this.closed = false;
     }
 
@@ -64,12 +85,12 @@ public class Topic {
         this.id = id;
     }
 
-    public ETopic getName() {
-        return name;
+    public ETopic getType() {
+        return type;
     }
 
-    public void setName(ETopic name) {
-        this.name = name;
+    public void setType(ETopic type) {
+        this.type = type;
     }
 
     public String getUserId() {
@@ -134,5 +155,21 @@ public class Topic {
 
     public void setClosed(boolean closed) {
         this.closed = closed;
+    }
+
+    @Override
+    public String toString() {
+        return "Topic{" +
+                "id='" + id + '\'' +
+                ", type=" + type +
+                ", userId='" + userId + '\'' +
+                ", postIds=" + postIds +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", posts=" + posts +
+                ", creationDate=" + creationDate +
+                ", lastUpdateDate=" + lastUpdateDate +
+                ", closed=" + closed +
+                '}';
     }
 }

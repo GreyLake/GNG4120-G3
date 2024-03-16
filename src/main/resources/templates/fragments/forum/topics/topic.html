@@ -1,18 +1,25 @@
-<div class="forum-item active">
-  <div class="row">
-    <div class="col-md-9">
-      <div class="forum-icon">
-        <i class="material-symbols-outlined" style="font-size: 50px">receipt_long</i>
-      </div>
-      <div class="px-3">
-        <a href="forum_post.html" class="forum-item-title">General Discussion</a>
-        <div class="forum-sub-title">Talk about sports, entertainment, music, movies, your favorite color, talk about anything.</div>
-      </div>
+<div class="container-fluid py-5 px-md-5" >
+    <div class="mh-100 min-vh-100 h-100">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="wrapper wrapper-content animated fadeInRight">
+                    <div class="ibox-content m-b-sm border-bottom">
+                        <div class="p-xs">
+                            <div class="pull-left m-r-md">
+                                <i class="fa fa-globe text-navy mid-icon"></i>
+                            </div>
+                            <h2>Welcome to the <span th:text="${topic.title}"></span> topic page!</h2>
+                            <span th:text="${topic.description}"></span>
+                            <span>Feel free to create a discussion of view others.</span>
+                        </div>
+                    </div>
+                    <div class="ibox-content forum-container" xmlns:hx="http://www.w3.org/1999/xhtml">
+                        <section hx:get="'/api/forum/asyncPostsList/' + ${topic.id}" hx-target="#asyncPostsList" hx-trigger="load" hx-swap="outerHTML">
+                            <div id="asyncPostsList">Loading...</div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-1 forum-info"><span class="views-number">140</span>
-      <div>
-        <small>Posts</small>
-      </div>
-    </div>
-  </div>
 </div>
