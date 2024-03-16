@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:hx="http://www.w3.org/1999/xhtml"
+      lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/google/index.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/common.css}" media="all">
+    <link rel="stylesheet" th:href="@{/css/forum.css}" media="all">
+
+    <script type="text/javascript" th:src="@{/js/htmx/htmx.min.js}"></script>
+
+    <title>Moo Money</title>
 </head>
 <body>
 
+<section id="bodySection">
+    <section th:replace="~{fragments/page/navbar :: section}"></section>
+
+    <section id="PostPageSection" hx-target="#asyncPostPage" hx-trigger="load" hx-swap="outerHTML">
+        <div id="asyncPostPage">Loading...</div>
+    </section>
+
+    <section th:replace="~{fragments/page/footer :: section}"></section>
+</section>
+
+<script th:src="@{/js/holder.min.js}"></script>
+<script th:src="@{/js/bootstrap/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
+<script th:src="@{/js/jquery-1.11.3.min.js}"></script>
 </body>
 </html>
