@@ -1,11 +1,8 @@
 package gng4120.group3.project.infrastructure.controllers.error;
 
-import gng4120.group3.project.infrastructure.exceptions.WebException;
+import gng4120.group3.project.infrastructure.exceptions.ErrorCode;
 import gng4120.group3.project.payload.response.ErrorResponse;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.boot.autoconfigure.web.ErrorProperties;
-import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -41,9 +38,9 @@ public class WebErrorController implements ErrorController {
         exceptionResponse.setTimestamp((Date) errorAttributesMap.get("timestamp"));
 
         if (status.series() == HttpStatus.Series.CLIENT_ERROR) {
-            exceptionResponse.setErrorCode(WebException.ErrorCode.CLIENT_ERROR);
+            exceptionResponse.setErrorCode(ErrorCode.CLIENT_ERROR);
         } else if (status.series() == HttpStatus.Series.SERVER_ERROR) {
-            exceptionResponse.setErrorCode(WebException.ErrorCode.INTERNAL_ERROR);
+            exceptionResponse.setErrorCode(ErrorCode.INTERNAL_ERROR);
         }
 
         model.addAttribute("exception", exceptionResponse);

@@ -1,0 +1,18 @@
+<div class="forum-item active">
+  <div class="row">
+    <div class="col-md-9">
+      <div class="forum-icon">
+        <i class="material-symbols-outlined" style="font-size: 50px">receipt_long</i>
+      </div>
+      <div class="px-3">
+        <a th:href="'/forum/' + ${topic.id}" class="forum-item-title" th:text="${topic.title}"></a>
+        <div class="forum-sub-title" th:text="${topic.description}"></div>
+      </div>
+    </div>
+    <div class="col-md-1 forum-info"><span class="posts-number" th:text="${topic.postIds.size()}"></span>
+      <div>
+        <small>Posts</small>
+      </div>
+    </div>
+  </div>
+</div>

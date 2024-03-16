@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -40,10 +41,15 @@ public class Post {
 
     private boolean closed;
 
+    public Post() {  }
+
     public Post(PostRequest request) {
         this.userId = request.getUserId();
         this.title = request.getTitle();
         this.content = request.getContent();
+        this.commentIds = Collections.emptyList();
+        this.creationDate = new Date();
+        this.lastUpdateDate = this.creationDate;
         this.closed = false;
     }
 

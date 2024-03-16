@@ -30,12 +30,11 @@ public class TopicInitializer {
         }
     }
 
-    private void saveRoleIfNotExists(ETopic topicName) {
+    private void saveRoleIfNotExists(ETopic topicType) {
         // Check if role exists
-        Optional<Topic> existingTopic = topicRepository.findByName(topicName);
-        if (existingTopic.isEmpty()) {
+        if (!topicRepository.existsByType(topicType)) {
             // Save roles to the database using the repository
-            Topic topic = new Topic(topicName);
+            Topic topic = new Topic(topicType);
             topicRepository.save(topic);
         }
     }

@@ -1,0 +1,11 @@
+<ul id="asyncTopicsList" xmlns:hx="http://www.w3.org/1999/xhtml" style="list-style-type: none">
+  <li th:each="topic : ${topicIds}">
+    <div th:id="'topic_' + ${topic}">
+      <div hx:get="'/api/forum/asyncTopics/' + ${topic}"
+           hx:target="'#topic_' + ${topic}" hx-swap="innerHTML" hx-trigger="load">
+          <span>Loading...</span>
+      </div>
+    </div>
+  </li>
+</ul>
+
