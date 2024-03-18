@@ -1,0 +1,7 @@
+<div class="container align-items-center justify-content-center" style="height: 100vh;">
+    <iframe width="100%" height="75%" th:src="'https://www.youtube.com/embed/' + ${video.getLink()}" th:title="${video.getTitle()}"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            style="position: relative; border: none;"
+            allowfullscreen>
+    </iframe>
+</div>

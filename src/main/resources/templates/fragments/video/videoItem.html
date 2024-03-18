@@ -1,0 +1,7 @@
+<div class="col-md-6">
+    <a th:href="'/video/' + ${video.id}" style="text-decoration: none">
+        <strong class="forum-item-title" style="color: black" th:text="${video.title}"></strong>
+        <img class="img-fluid" th:src="'https://img.youtube.com/vi/' + ${video.getLink()} + '/hqdefault.jpg'" alt="Video Thumbnail" src="">
+        <div class="forum-sub-title" th:text="${video.description}"></div>
+    </a>
+</div>

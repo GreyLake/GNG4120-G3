@@ -9,6 +9,8 @@ import gng4120.group3.project.models.forum.Post;
 import gng4120.group3.project.models.forum.Topic;
 import gng4120.group3.project.payload.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.http.HttpStatus;
@@ -53,6 +55,7 @@ public class ForumAPIController {
         // Logic to fetch the list of topics asynchronously
         // Return the Thymeleaf template name that represents the content for the topics list
         // Logic to fetch the list of topic IDs asynchronously
+
         List<String> topicIds = topicRepository.findAllTopicIds().stream().map(Topic::getId).toList();
 
         // Add the list of topic IDs as a session attribute
@@ -65,6 +68,7 @@ public class ForumAPIController {
     public String getAsyncTopic(@PathVariable String id, Model model) {
         // Logic to fetch additional content for the topic with the given ID asynchronously
         // Return the Thymeleaf template name that represents the content for the topic
+
         Topic topic = topicRepository.findById(id).orElse(new Topic());
         model.addAttribute("topic", topic);
 
@@ -121,6 +125,7 @@ public class ForumAPIController {
     public String getAsyncPost(@PathVariable String id, Model model) {
         // Logic to fetch additional content for the post with the given ID asynchronously
         // Return the Thymeleaf template name that represents the content for the post
+
         Post post = postRepository.findById(id).orElse(new Post());
         model.addAttribute("post", post);
 
