@@ -1,10 +1,9 @@
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org"
       lang="en">
-<section id="authorizedHome">
+<section id="authorizedHome" class="mh-100 min-vh-100 h-100">
     <div class="container-fluid py-5 px-md-5 feature">
-        <div class="mh-100 h-100">
-            <div class="p-5 mb-4 bg-light rounded-3 row justify-content-center">
+        <div>
+            <div class="p-5 bg-light rounded-3 row justify-content-center">
                 <div th:if="${#ctx.session.currentUser != null}">
                     <h1>Welcome, <span th:text="${#ctx.session.currentUser.firstname}"></span> <span th:text="${#ctx.session.currentUser.lastname}"></span>! 🐮</h1>
                     <p>We're working hard to bring you an amazing website. Please check back later!</p>
@@ -13,13 +12,24 @@
         </div>
     </div>
     <div class="container-fluid py-5 px-md-5 feature">
-        <div class="mh-100 h-100">
-            <div class="p-5 mb-4 bg-light rounded-3 row justify-content-center">
-                <h1>Visit Our Forums Page! </h1>
-                <p>Share your <strong>Experiences</strong>, <strong>Questions</strong>, and <strong>Comments</strong> on our forum!</p>
-                <form method="GET" th:action="@{/forum/}">
-                    <button class="btn btn-outline-primary me-2" type="submit">Visit Forums</button>
-                </form>
+        <div class="row">
+            <div class="col-lg-6 pr-lg-2 mb-lg-0 mb-4">
+                <div class="p-5 rounded-3 bg-light justify-content-center">
+                    <h1>Visit Our Forums Page!</h1>
+                    <p>Share your <strong>Experiences</strong>, <strong>Questions</strong>, and <strong>Comments</strong> on our forum!</p>
+                    <form method="GET" th:action="@{/forum/}">
+                        <button class="btn btn-outline-primary me-2" type="submit">Visit Forums</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6 pl-lg-2 mb-lg-0">
+                <div class="p-5 bg-light rounded-3 justify-content-center">
+                    <h1>View Educational Videos!</h1>
+                    <p>Expand your financial <strong>Knowledge</strong>, and <strong>Understanding</strong> with our <strong>Fun</strong> videos!</p>
+                    <form method="GET" th:action="@{/videos/}">
+                        <button class="btn btn-outline-primary me-2" type="submit">View Videos</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

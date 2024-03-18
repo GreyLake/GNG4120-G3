@@ -23,11 +23,15 @@ public class WebSecurityAccess {
     protected static final String[] FOR_ADMINS = {"/admin/**",
             "/users/**",
             "/forum/*/edit",
+            "/videos/new",
+            "/videos/*/del",
             "/section/new"};
 
     protected static final String[] FOR_MODERATORS = {"/admin/**",
             "/users/**",
             "/forum/*/edit",
+            "/videos/new",
+            "/videos/*/del",
             "/section/new"};
 
     protected static final String[] ADMIN_ROLES = {
