@@ -7,6 +7,7 @@ import gng4120.group3.project.database.repository.account.UserRepository;
 import gng4120.group3.project.infrastructure.exceptions.ErrorCode;
 import gng4120.group3.project.models.forum.Post;
 import gng4120.group3.project.models.forum.Topic;
+import gng4120.group3.project.payload.request.PostRequest;
 import gng4120.group3.project.payload.response.ErrorResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.*;
@@ -142,4 +144,28 @@ public class ForumAPIController {
         return "fragments/forum/posts/post"; // Thymeleaf template name
     }
 
+    @PostMapping(value = "/{topic}/new")
+    public String newPost(@ModelAttribute("postRequest") PostRequest postRequest, @PathVariable String topic, Model model) {
+        Topic top = topicRepository.findById(topic).orElseThrow();
+
+        Post post = new Post(postRequest);
+        post = postRepository.save(post);
+
+        List<String> posts = top.getPostIds();
+        posts.add(post.getId());
+        top.setPostIds(posts);
+
+        topicRepository.save(top);
+
+        model.addAttribute("topicId", topic);
+        return "redirect:/forum/" + topic;
+    }
+
+    @PostMapping(value = "/{topic}/{post}/edit")
+    public String editPost(@ModelAttribute("postRequest") PostRequest signupRequest, @PathVariable String topic, @PathVariable String post, Model model) {
+
+        model.addAttribute("topicId", topic);
+        model.addAttribute("postId", post);
+        return "redirect:/forum/" + topic;
+    }
 }

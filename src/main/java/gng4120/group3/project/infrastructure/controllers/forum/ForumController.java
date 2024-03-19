@@ -1,5 +1,6 @@
 package gng4120.group3.project.infrastructure.controllers.forum;
 
+import gng4120.group3.project.payload.request.PostRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,7 +50,7 @@ public class ForumController {
     @RequestMapping({"/{topic}/new/", "/{topic}/new"})
     public String forumNewPost(@PathVariable String topic, Model model) {
         model.addAttribute("topicId", topic);
+        model.addAttribute("postRequest", new PostRequest());
         return "pages/forum/post/actions/newPost";
     }
-
 }
