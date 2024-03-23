@@ -1,0 +1,8 @@
+.parent-div {
+    display: grid;
+}
+
+.video-div {
+    height: 100%; /* Ensure the video div fills the height of its parent */
+    /* Add any other styling you need for your video div */
+}

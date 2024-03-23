@@ -48,8 +48,6 @@ public class VideoAPIController {
         Video video = videoRepository.findById(id).orElse(new Video());
         model.addAttribute("video", video);
 
-        System.out.println(video);
-
         return "fragments/video/videoItem"; // Thymeleaf template name
     }
 

@@ -5,8 +5,9 @@
         <div>
             <div class="p-5 bg-light rounded-3 row justify-content-center">
                 <div th:if="${#ctx.session.currentUser != null}">
-                    <h1>Welcome, <span th:text="${#ctx.session.currentUser.firstname}"></span> <span th:text="${#ctx.session.currentUser.lastname}"></span>! 🐮</h1>
-                    <p>We're working hard to bring you an amazing website. Please check back later!</p>
+                    <h1><img style="height: 2em; width: 2em;" class="rounded-circle me-3" th:src="@{/img/WelcomePic.png}" alt src="">
+                        Welcome, <span th:text="${#ctx.session.currentUser.firstname}"></span> <span th:text="${#ctx.session.currentUser.lastname}"></span>!</h1>
+                    <p>We're working hard to bring you an amazing website!</p>
                 </div>
             </div>
         </div>
@@ -15,6 +16,9 @@
         <div class="row">
             <div class="col-lg-6 pr-lg-2 mb-lg-0 mb-4">
                 <div class="p-5 rounded-3 bg-light justify-content-center">
+                    <a href="#">
+                        <img class="img-fluid rounded" th:src="@{/img/ForumsPic.png}" alt src="">
+                    </a>
                     <h1>Visit Our Forums Page!</h1>
                     <p>Share your <strong>Experiences</strong>, <strong>Questions</strong>, and <strong>Comments</strong> on our forum!</p>
                     <form method="GET" th:action="@{/forum/}">
@@ -24,6 +28,9 @@
             </div>
             <div class="col-lg-6 pl-lg-2 mb-lg-0">
                 <div class="p-5 bg-light rounded-3 justify-content-center">
+                    <a href="#">
+                        <img class="img-fluid rounded" th:src="@{/img/TeachingPic.png}" alt src="">
+                    </a>
                     <h1>View Educational Videos!</h1>
                     <p>Expand your financial <strong>Knowledge</strong>, and <strong>Understanding</strong> with our <strong>Fun</strong> videos!</p>
                     <form method="GET" th:action="@{/videos/}">

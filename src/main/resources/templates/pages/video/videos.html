@@ -20,11 +20,9 @@
   <section id="bodySection">
     <section th:replace="~{fragments/page/navbar :: section}"></section>
 
-    <div class="mh-100 min-vh-100 h-100">
-      <section id="topicSection" hx-get="/api/video/asyncVideoPage" hx-target="#asyncVideoPage" hx-trigger="load" hx-swap="outerHTML">
-        <div id="asyncVideoPage">Loading...</div>
-      </section>
-    </div>
+    <section id="topicSection" hx-get="/api/video/asyncVideoPage" hx-target="#asyncVideoPage" hx-trigger="load" hx-swap="outerHTML">
+      <div id="asyncVideoPage">Loading...</div>
+    </section>
 
     <section th:replace="~{fragments/page/footer :: section}"></section>
   </section>
