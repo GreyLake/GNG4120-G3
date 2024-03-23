@@ -1,11 +1,15 @@
-<div id="asyncVideosList" xmlns:hx="http://www.w3.org/1999/xhtml" class="row mb-4 ">
-    <div th:each="video : ${videoIds}" class="col-md-3">
-        <!-- Video Widget content -->
-        <div th:id="'video_' + ${video}">
-            <div hx:get="'/api/video/asyncVideo/' + ${video}"
-                 hx:target="'#video_' + ${video}" hx-swap="innerHTML" hx-trigger="load"
-                 class="p-5 rounded-3 bg-light justify-content-center m-md-2">
-                <span>Loading...</span>
+<div class="container-fluid py-5 px-md-5">
+    <div class="mh-100 min-vh-100 h-100">
+        <div id="asyncVideosList" xmlns:hx="http://www.w3.org/1999/xhtml" class="row mb-4">
+            <div th:each="video : ${videoIds}" class="col-lg-3 parent-div">
+                <!-- Video Widget content -->
+                <div th:id="'video_' + ${video}" class="video-div pb-5">
+                    <div hx:get="'/api/video/asyncVideo/' + ${video}"
+                         hx:target="'#video_' + ${video}" hx-swap="innerHTML" hx-trigger="load"
+                         class="col-md-3 m-3 rounded-3 bg-light justify-content-center">
+                        <span>Loading...</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
